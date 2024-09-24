@@ -1,16 +1,21 @@
 import {createBrowserRouter} from "react-router-dom";
-import MainPage from "../pages/MainPage.tsx";
-import Contact from "../pages/Contact.tsx";
+import {lazy, Suspense} from "react";
+import LoadingPage from "../pages/LoadingPage.tsx";
 
+
+const MainPage = lazy(() => import("../pages/MainPage"))
+const Contact = lazy(() => import("../pages/Contact"))
+
+const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
     {
         path: "/",
-        element: <MainPage/>,
+        element: <Suspense fallback={Loading}><MainPage/></Suspense> ,
     },
     {
         path: "/contact",
-        element: <Contact></Contact>
+        element: <Suspense fallback={Loading}><Contact/></Suspense>
     }
 ])
 
