@@ -1,46 +1,33 @@
-import {useLocation, useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {IPageResponse} from "../../types/todo.ts";
-import {getTodoList} from "../../api/todoAPI.ts";
+
 import LoadingComponent from "../common/LoadingComponent.tsx";
 import PageComponent from "../common/PageComponent.tsx";
-
-
-const initialState = {
-    content: [],
-    first: false,
-    last: false,
-    number: 0,
-    size: 0,
-    totalElements: 0,
-    totalPages: 0
-}
+import useTodoList from "../../hooks/useTodoList.ts";
+import {ITodo} from "../../types/todo.ts";
 
 
 function TodoListComponent() {
 
-    const [query] = useSearchParams()
-    const page: number = Number(query.get("page")) || 1
-    const size: number = Number(query.get("size")) || 10
-    const [loading, setLoading] = useState<boolean>(false)
+    const {loading, pageResponse, moveToRead} = useTodoList()
 
-    const [pageResponse, setPageResponse] = useState<IPageResponse>(initialState)
-    const location = useLocation()
+    const listLI = pageResponse.content.map( (todo:ITodo) => {
 
-    useEffect(() => {
-        console.log("--------------------")
-        setLoading(true)
-        getTodoList(page,size).then(data => {
-            setPageResponse(data)
-            setLoading(false)
-        })
-    },[query, location.key])
+        const {mno,title,writer,dueDate} = todo
 
+        return (
+            <li key={mno} onClick={() => moveToRead(mno)}>
+                {mno} - {title} - {writer} - {dueDate}
+            </li>
+        )
+    })
 
     return (
         <div>
             {loading && <LoadingComponent></LoadingComponent>}
             <div>Todo List Component</div>
+
+            <ul>
+                {listLI}
+            </ul>
 
             <PageComponent pageResponse={pageResponse}  ></PageComponent>
         </div>

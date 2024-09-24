@@ -1,6 +1,6 @@
 import {IPageResponse} from "../../types/todo.ts";
 import {ReactElement} from "react";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 
 interface Props {
     pageResponse:IPageResponse

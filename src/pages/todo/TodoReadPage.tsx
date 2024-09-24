@@ -1,14 +1,17 @@
-import {useParams} from "react-router-dom";
-
+import TodoReadComponent from "../../components/todo/TodoReadComponent.tsx";
 
 function TodoReadPage() {
 
-    const {mno} = useParams()
 
-    console.log(mno)
+
 
     return (
-        <div></div>
+        <div>
+            <div>Todo Read Page</div>
+
+            <TodoReadComponent/>
+
+        </div>
     );
 }
 
