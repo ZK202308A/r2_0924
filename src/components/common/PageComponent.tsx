@@ -1,9 +1,9 @@
 import {IPageResponse} from "../../types/todo.ts";
 import {ReactElement} from "react";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 interface Props {
-    pageResponse:IPageResponse,
-    changePage:(p:number) => void;
+    pageResponse:IPageResponse
 }
 
 const makeArr = (from:number, to:number): number[] => {
@@ -15,7 +15,7 @@ const makeArr = (from:number, to:number): number[] => {
     return arr
 }
 
-function PageComponent({pageResponse, changePage}: Props): ReactElement {
+function PageComponent({pageResponse}: Props): ReactElement {
 
     const current: number = pageResponse.number + 1
     //  (1/10.0) => 0.1 => 1 * 10 => 20
@@ -26,6 +26,15 @@ function PageComponent({pageResponse, changePage}: Props): ReactElement {
     const next:boolean = true
 
     const pageNums: number[] = makeArr(startPage, endPage)
+
+    const [query,setQuery] = useSearchParams()
+
+    const changePage = (pageNum: number) => {
+
+        query.set("page", String(pageNum))
+        setQuery(query)
+
+    }
 
     const lis = pageNums.map(num => <li
         className='px-4 py-2 text-white bg-blue-500 border border-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300'
