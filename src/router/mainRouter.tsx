@@ -1,15 +1,13 @@
-import {createBrowserRouter, Navigate} from "react-router-dom";
+import {createBrowserRouter} from "react-router-dom";
 import {lazy, Suspense} from "react";
 import LoadingPage from "../pages/LoadingPage.tsx";
+import todoRouter from "./todoRouter.tsx";
 
 
 const MainPage = lazy(() => import("../pages/MainPage"))
 const Contact = lazy(() => import("../pages/Contact"))
 
-const TodoIndex = lazy(() => import("../pages/todo/TodoIndex"))
-const TodoList = lazy(() => import("../pages/todo/TodoListPage"))
-
-const Loading = <LoadingPage></LoadingPage>
+export const Loading = <LoadingPage></LoadingPage>
 
 const mainRouter = createBrowserRouter([
     {
@@ -20,20 +18,8 @@ const mainRouter = createBrowserRouter([
         path: "/contact",
         element: <Suspense fallback={Loading}><Contact/></Suspense>
     },
-    {
-        path: "/todo",
-        element: <Suspense fallback={Loading}><TodoIndex/></Suspense>,
-        children: [
-            {
-                path: "list",
-                element: <Suspense fallback={Loading}><TodoList/></Suspense>
-            },
-            {
-                path: "",
-                element: <Navigate to='list' replace={true}></Navigate>
-            }
-        ]
-    }
+    todoRouter,
+
 ])
 
 export default mainRouter
