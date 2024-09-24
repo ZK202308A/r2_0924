@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 
 function BasicLayout({children}: {children: React.ReactNode}) {
     return (
@@ -5,14 +6,14 @@ function BasicLayout({children}: {children: React.ReactNode}) {
             <header className="bg-white shadow-md">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     {/* 로고 */}
-                    <a href="/" className="text-2xl font-bold text-blue-500">MyLogo</a>
+                    <Link to="/" className="text-2xl font-bold text-blue-500">MyLogo</Link>
 
                     {/* 네비게이션 */}
                     <nav className="hidden md:flex space-x-6">
-                        <a href="/" className="text-gray-700 hover:text-blue-500">Home</a>
-                        <a href="/about" className="text-gray-700 hover:text-blue-500">About</a>
-                        <a href="/services" className="text-gray-700 hover:text-blue-500">Services</a>
-                        <a href="/contact" className="text-gray-700 hover:text-blue-500">Contact</a>
+                        <Link to="/" className="text-gray-700 hover:text-blue-500">Home</Link>
+                        <Link to="/todo" className="text-gray-700 hover:text-blue-500">Todo</Link>
+                        <Link to="/services" className="text-gray-700 hover:text-blue-500">Services</Link>
+                        <Link to="/contact" className="text-gray-700 hover:text-blue-500">Contact</Link>
                     </nav>
 
                     {/* CTA 버튼 */}
@@ -35,11 +36,14 @@ function BasicLayout({children}: {children: React.ReactNode}) {
                     </div>
                 </div>
             </header>
-            <div className='flex w-full'>
-                <main>{children}</main>
-                <aside>
-                    <p>Sidebar</p>
-                </aside>
+            {/* Content Layout with Aside and Main */}
+            <div className="flex flex-1">
+
+                {/* Main Content */}
+                <main className="flex-1 bg-white p-8">
+                    {children}
+
+                </main>
             </div>
 
 
