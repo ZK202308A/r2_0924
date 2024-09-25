@@ -29,6 +29,10 @@ function TodoModifyComponent() {
         navigate({pathname:'/todo/list', search:`${queryString}`})
     }
 
+    const moveToRead = () => {
+        navigate({pathname:`/todo/read/${mno}`, search:`${queryString}`})
+    }
+
 
     useEffect(() => {
         const mnoNum = Number(mno)
@@ -58,8 +62,18 @@ function TodoModifyComponent() {
     }
 
     const closeCallback = () => {
+
+        const msg:string = result
+
         setResult('')
-        moveToList()
+
+        if(msg === mno +' 수정되었습니다.'){
+            moveToRead()
+        }else {
+            moveToList()
+        }
+
+
     }
 
     const handleClickModify = () => {
@@ -67,6 +81,8 @@ function TodoModifyComponent() {
         setLoading(true)
         putOne(todo).then( (modifyResult:ITodo) => {
             console.log(modifyResult)
+
+            setResult(mno +' 수정되었습니다.')
 
             setTimeout(() => {
                 setLoading(false)
