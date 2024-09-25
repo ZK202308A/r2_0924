@@ -1,6 +1,9 @@
 import {ITodo} from "../../types/todo.ts";
 import {ChangeEvent, useCallback, useState} from "react";
 import {postTodo} from "../../api/todoAPI.ts";
+import LoadingComponent from "../common/LoadingComponent.tsx";
+import {useNavigate} from "react-router-dom";
+import ResultModal from "../common/ResultModal.tsx";
 
 
 const initState:ITodo ={
@@ -13,6 +16,12 @@ function TodoAddComponent() {
 
     const [todo, setTodo] = useState<ITodo>({...initState})
 
+    const [loading, setLoading] = useState(false)
+
+    const navigate = useNavigate()
+
+    const [resultData, setResultData] = useState<number>(0)
+
     const handleChange =  useCallback((e:ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
         todo[e.target.name] = e.target.value
@@ -22,15 +31,32 @@ function TodoAddComponent() {
 
     const handleClick = () => {
 
+        setLoading(true)
         postTodo(todo).then( (mno:number) => {
 
             console.log(mno)
-        })
+            setResultData(mno)
 
+            setTimeout(() => {
+                setLoading(false)
+            }, 600)
+        })
     }
+
+    const closeCallback = () => {
+        setResultData(0)
+        setTodo({...initState})
+        navigate('/todo/list')
+    }
+
+
 
     return (
         <div className='flex flex-col space-y-4 w-96 mx-auto'>
+
+            {loading && <LoadingComponent></LoadingComponent>}
+            {resultData !== 0 && <ResultModal msg={`${resultData}번 등록완료`} callback={closeCallback} /> }
+
             <label className="text-sm font-semibold text-gray-700">Title</label>
             <input
                 type="text"
