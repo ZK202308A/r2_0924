@@ -1,9 +1,11 @@
-import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {ChangeEvent, ReactElement, useEffect, useState} from "react";
+import { useParams} from "react-router-dom";
+import {ChangeEvent, useEffect, useState} from "react";
 import {deleteOne, getOne, putOne} from "../../api/todoAPI.ts";
 import LoadingComponent from "../common/LoadingComponent.tsx";
 import {ITodo} from "../../types/todo.ts";
 import ResultModal from "../common/ResultModal.tsx";
+import useCustomMove from "../../hooks/useCustomMove.ts";
+import useCustomML from "../../hooks/useCustomML.ts";
 
 const initialState:ITodo = {
     mno:0,
@@ -17,21 +19,8 @@ function TodoModifyComponent() {
     const {mno} = useParams()
 
     const [todo, setTodo] = useState(initialState)
-    const [loading, setLoading] = useState(false)
-
-    const [result, setResult] = useState<string>('')
-
-    const location = useLocation()
-    const navigate = useNavigate()
-    const queryString = location.search
-
-    const moveToList = () => {
-        navigate({pathname:'/todo/list', search:`${queryString}`})
-    }
-
-    const moveToRead = () => {
-        navigate({pathname:`/todo/read/${mno}`, search:`${queryString}`})
-    }
+    const {loading,setLoading, resultData, setResultData} = useCustomML()
+    const {moveToRead, moveToList} = useCustomMove(Number(mno))
 
 
     useEffect(() => {
@@ -50,7 +39,7 @@ function TodoModifyComponent() {
 
             console.log(data.result)
             if(data.result === 'success'){
-                setResult(mno +' 삭제되었습니다.')
+                setResultData(mno +' 삭제되었습니다.')
             }
 
             setTimeout(() => {
@@ -63,9 +52,9 @@ function TodoModifyComponent() {
 
     const closeCallback = () => {
 
-        const msg:string = result
+        const msg:string = resultData
 
-        setResult('')
+        setResultData('')
 
         if(msg === mno +' 수정되었습니다.'){
             moveToRead()
@@ -82,7 +71,7 @@ function TodoModifyComponent() {
         putOne(todo).then( (modifyResult:ITodo) => {
             console.log(modifyResult)
 
-            setResult(mno +' 수정되었습니다.')
+            setResultData(mno +' 수정되었습니다.')
 
             setTimeout(() => {
                 setLoading(false)
@@ -106,7 +95,7 @@ function TodoModifyComponent() {
 
             {loading && <LoadingComponent></LoadingComponent>}
 
-            {result && <ResultModal msg={result} callback={closeCallback }></ResultModal>}
+            {resultData && <ResultModal msg={resultData} callback={closeCallback }></ResultModal>}
 
             <label className="text-sm font-semibold text-gray-700">MNO</label>
             <input
