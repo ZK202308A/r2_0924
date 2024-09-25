@@ -5,10 +5,9 @@ import LoadingPage from "../pages/LoadingPage.tsx";
 const Loading = <LoadingPage></LoadingPage>
 const TodoIndex = lazy(() => import("../pages/todo/TodoIndex"))
 const TodoList = lazy(() => import("../pages/todo/TodoListPage"))
-
 const TodoRead = lazy(() => import("../pages/todo/TodoReadPage"))
-
 const TodoAdd = lazy(() => import("../pages/todo/TodoAddPage"))
+const TodoModify = lazy(() => import("../pages/todo/TodoModifyPage"))
 
 const todoRouter = {
     path: "/todo",
@@ -29,7 +28,11 @@ const todoRouter = {
         {
             path: "add",
             element: <Suspense fallback={Loading}><TodoAdd/></Suspense>
-        }
+        },
+        {
+            path: "modify/:mno",
+            element: <Suspense fallback={Loading}><TodoModify/></Suspense>
+        },
     ]
 }
 

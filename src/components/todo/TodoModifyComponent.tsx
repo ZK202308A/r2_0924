@@ -1,8 +1,9 @@
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {ITodo} from "../../types/todo.ts";
-import {getOne} from "../../api/todoAPI.ts";
+import {deleteOne, getOne} from "../../api/todoAPI.ts";
 import LoadingComponent from "../common/LoadingComponent.tsx";
+import {ITodo} from "../../types/todo.ts";
+import ResultModal from "../common/ResultModal.tsx";
 
 const initialState:ITodo = {
     mno:0,
@@ -11,12 +12,14 @@ const initialState:ITodo = {
     dueDate:''
 }
 
-function TodoReadComponent() {
+function TodoModifyComponent() {
 
     const {mno} = useParams()
 
     const [todo, setTodo] = useState(initialState)
     const [loading, setLoading] = useState(false)
+
+    const [result, setResult] = useState<string>('')
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -26,7 +29,7 @@ function TodoReadComponent() {
         navigate({pathname:'/todo/list', search:`${queryString}`})
     }
     const moveToModify = () => {
-            navigate({pathname:`/todo/modify/${mno}`, search:`${queryString}`})
+        navigate({pathname:`/todo/modify/${mno}`, search:`${queryString}`})
     }
 
     useEffect(() => {
@@ -38,10 +41,36 @@ function TodoReadComponent() {
         })
     },[mno])
 
+    const handleClickDelete = () => {
+
+        setLoading(true)
+        deleteOne(Number(mno)).then(data => {
+
+            console.log(data.result)
+            if(data.result === 'success'){
+                setResult(mno +' 삭제되었습니다.')
+            }
+
+            setTimeout(() => {
+                setLoading(false)
+            }, 600)
+
+        })
+
+    }
+
+    const closeCallback = () => {
+        setResult('')
+        moveToList()
+    }
+
+
     return (
         <div className='flex flex-col space-y-4 w-96 mx-auto'>
 
             {loading && <LoadingComponent></LoadingComponent>}
+
+            {result && <ResultModal msg={result} callback={closeCallback }></ResultModal>}
 
             <label className="text-sm font-semibold text-gray-700">MNO</label>
             <input
@@ -91,10 +120,18 @@ function TodoReadComponent() {
                 >MODIFY
                 </button>
 
+                <button type="button"
+                        className="bg-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300"
+                        onClick={handleClickDelete}
+                >DELETE
+                </button>
+
             </div>
 
         </div>
     );
+
+
 }
 
-export default TodoReadComponent;
+export default TodoModifyComponent;

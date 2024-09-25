@@ -29,3 +29,19 @@ export const getOne = async (mno : number) : Promise<ITodo> => {
     return res.data
 
 }
+
+export const putOne = async (todo: ITodo ): Promise<ITodo>  => {
+
+    const res = await axios.put(`${host}/${todo.mno}`, todo)
+
+    return res.data
+}
+
+export const deleteOne = async (mno: number): Promise<{result:string}> => {
+
+    const res = await axios.delete(`${host}/${mno}`)
+
+    return res.data
+
+}
+
