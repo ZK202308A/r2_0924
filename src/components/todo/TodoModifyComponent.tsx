@@ -1,6 +1,6 @@
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {deleteOne, getOne} from "../../api/todoAPI.ts";
+import {ChangeEvent, ReactElement, useEffect, useState} from "react";
+import {deleteOne, getOne, putOne} from "../../api/todoAPI.ts";
 import LoadingComponent from "../common/LoadingComponent.tsx";
 import {ITodo} from "../../types/todo.ts";
 import ResultModal from "../common/ResultModal.tsx";
@@ -28,9 +28,7 @@ function TodoModifyComponent() {
     const moveToList = () => {
         navigate({pathname:'/todo/list', search:`${queryString}`})
     }
-    const moveToModify = () => {
-        navigate({pathname:`/todo/modify/${mno}`, search:`${queryString}`})
-    }
+
 
     useEffect(() => {
         const mnoNum = Number(mno)
@@ -64,6 +62,28 @@ function TodoModifyComponent() {
         moveToList()
     }
 
+    const handleClickModify = () => {
+
+        setLoading(true)
+        putOne(todo).then( (modifyResult:ITodo) => {
+            console.log(modifyResult)
+
+            setTimeout(() => {
+                setLoading(false)
+            }, 600)
+
+        })
+    }
+
+    const handleChange = (e:ChangeEvent<HTMLInputElement>):void => {
+
+        // @ts-ignore
+        todo[e.target.name] = e.target.value
+
+        setTodo({...todo})
+
+    }
+
 
     return (
         <div className='flex flex-col space-y-4 w-96 mx-auto'>
@@ -87,7 +107,8 @@ function TodoModifyComponent() {
                 name="title"
                 className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
                 value={todo.title}
-                readOnly={true}
+                onChange={ event => handleChange(event)}
+
             />
             <label className="text-sm font-semibold text-gray-700">Writer</label>
             <input
@@ -103,7 +124,7 @@ function TodoModifyComponent() {
                 name="dueDate"
                 className="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
                 value={todo.dueDate}
-                readOnly={true}
+                onChange={ event => handleChange(event)}
             />
 
             <div className='flex justify-center gap-2'>
@@ -116,7 +137,7 @@ function TodoModifyComponent() {
 
                 <button type="button"
                         className="bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300"
-                        onClick={moveToModify}
+                        onClick={handleClickModify}
                 >MODIFY
                 </button>
 
