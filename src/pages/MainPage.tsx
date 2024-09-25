@@ -1,6 +1,9 @@
 import BasicLayout from "../layouts/BasicLayout.tsx";
 
 function MainPage() {
+
+
+
     return (
         <BasicLayout>
 

@@ -19,13 +19,16 @@ const useTodoList = () => {
     const location = useLocation()
     const navigate = useNavigate()
 
+    console.log("-----------------")
+    console.log(location)
+
     const page: number = Number(query.get("page")) || 1
     const size: number = Number(query.get("size")) || 10
 
     const [loading, setLoading] = useState<boolean>(false)
     const [pageResponse, setPageResponse] = useState<IPageResponse>(initialState)
 
-    const queryStr = createSearchParams({page:page,size:size})
+    const queryStr = createSearchParams({page:String(page),size:String(size)})
 
     const moveToRead = (mno: number | undefined) => {
         navigate({
@@ -40,7 +43,11 @@ const useTodoList = () => {
         setLoading(true)
         getTodoList(page,size).then(data => {
             setPageResponse(data)
-            setLoading(false)
+
+            setTimeout(() => {
+                setLoading(false)
+            }, 600)
+
         })
     },[query, location.key])
 

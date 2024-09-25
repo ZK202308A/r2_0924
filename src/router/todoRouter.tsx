@@ -8,6 +8,7 @@ const TodoList = lazy(() => import("../pages/todo/TodoListPage"))
 
 const TodoRead = lazy(() => import("../pages/todo/TodoReadPage"))
 
+const TodoAdd = lazy(() => import("../pages/todo/TodoAddPage"))
 
 const todoRouter = {
     path: "/todo",
@@ -24,6 +25,10 @@ const todoRouter = {
         {
             path: "read/:mno",
             element: <Suspense fallback={Loading}><TodoRead/></Suspense>
+        },
+        {
+            path: "add",
+            element: <Suspense fallback={Loading}><TodoAdd/></Suspense>
         }
     ]
 }
