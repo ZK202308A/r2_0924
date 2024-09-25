@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {ITodo} from "../../types/todo.ts";
 import {getOne} from "../../api/todoAPI.ts";
@@ -17,6 +17,14 @@ function TodoReadComponent() {
 
     const [todo, setTodo] = useState(initialState)
     const [loading, setLoading] = useState(false)
+
+    const location = useLocation()
+    const navigate = useNavigate()
+    const queryString = location.search
+
+    const moveToList = () => {
+        navigate({pathname:'/todo/list', search:`?${queryString}`})
+    }
 
     useEffect(() => {
         const mnoNum = Number(mno)
@@ -69,6 +77,8 @@ function TodoReadComponent() {
             <div className='flex justify-center gap-2'>
                 <button type="button"
                         className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300"
+
+                        onClick={moveToList}
                 >LIST
                 </button>
 
