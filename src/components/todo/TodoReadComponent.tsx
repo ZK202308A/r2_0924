@@ -23,7 +23,7 @@ function TodoReadComponent() {
     const queryString = location.search
 
     const moveToList = () => {
-        navigate({pathname:'/todo/list', search:`?${queryString}`})
+        navigate({pathname:'/todo/list', search:`${queryString}`})
     }
 
     useEffect(() => {
