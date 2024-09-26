@@ -23,7 +23,11 @@ const useCheckAuth = () => {
 
         }else {
 
+            doSignin({username: cookieValue.email, password: cookieValue.password})
+
         }
+
+        return null
 
     }
 
