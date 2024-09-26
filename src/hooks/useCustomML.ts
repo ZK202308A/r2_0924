@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 
-const useCustomML = () => {
+const useCustomML = <E>() => {
 
     const [loading, setLoad] = useState(false)
 
@@ -10,10 +10,10 @@ const useCustomML = () => {
         setLoad(value)
     }
 
-    const [resultData, setData] = useState<string>('')
+    const [resultData, setData] = useState<E>()
 
     // @ts-ignore
-    const setResultData = (value: string):void => {
+    const setResultData = (value: E):void => {
         setData(value)
     }
 
