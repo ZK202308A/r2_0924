@@ -15,10 +15,14 @@ const countSlice = createSlice({
         increment: (state, action) => {
             console.log("increment")
             console.log(state, action)
+
+            return {num: state.num + 1}
         },
         decrement: (state, action) => {
             console.log("decrement")
             console.log(state, action)
+
+            return {num: state.num - 1}
         }
     }
 })

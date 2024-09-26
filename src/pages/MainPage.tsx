@@ -1,18 +1,14 @@
 import BasicLayout from "../layouts/BasicLayout.tsx";
 
-import { useAppSelector, useAppDispatch } from '../hooks/rtk.ts'
 import {useCallback} from "react";
-import {increment} from "../slices/countSlice.ts";
+import useCount from "../hooks/useCount.ts";
 
 function MainPage() {
 
-    const dispatch = useAppDispatch();
-    const countState = useAppSelector(state => state.count);
-
-    console.log(countState)
+    const {countState, inc} = useCount()
 
     const handleClick = useCallback(() => {
-        dispatch(increment(null))
+        inc()
     },[])
 
     return (

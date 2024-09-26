@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import countSlice from "./slices/countSlice.ts";
+import signinSlice from "./slices/signinSlice.ts";
 
 const projectStore = configureStore({
     reducer: {
-        count: countSlice
+        count: countSlice,
+        signin: signinSlice,
     }
 });
 
