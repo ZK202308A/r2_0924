@@ -1,5 +1,7 @@
 import {ISigninParam} from "../../types/member.ts";
-import {ChangeEvent, useCallback, useState} from "react";
+import {ChangeEvent, useState} from "react";
+import {useAppDispatch} from "../../hooks/rtk.ts";
+import {signin} from "../../slices/signinSlice.ts";
 
 
 const initialState: ISigninParam ={
@@ -12,15 +14,18 @@ function SigninComponent() {
 
     const [param, setParam] = useState<ISigninParam>({...initialState})
 
+    const dispatch = useAppDispatch()
+
     const handleChange = (event:ChangeEvent<HTMLInputElement>):void => {
-
-        const name:string|undefined = event.target.name;
+        let name:string|undefined = event.target.name;
         const value:string|undefined = event.target.value;
+        // @ts-ignore
+        param[name] = value
+        setParam({...param})
+    }
 
-        if(name){
-            param[name] = value
-            setParam({...param})
-        }
+    const handleClick = () => {
+        dispatch(signin(param))
     }
 
     return (
@@ -42,7 +47,7 @@ function SigninComponent() {
                 onChange={e => handleChange(e)}
             />
 
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"> Signin</button>
+            <button onClick={handleClick} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"> Signin</button>
 
         </div>
     );
