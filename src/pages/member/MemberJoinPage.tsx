@@ -1,9 +1,10 @@
+import BasicLayout from "../../layouts/BasicLayout.tsx";
 
 function MemberJoinPage() {
     return (
-        <div>
+        <BasicLayout>
             <div>Member Join Page</div>
-        </div>
+        </BasicLayout>
     );
 }
 
