@@ -1,5 +1,6 @@
 import BasicLayout from "../layouts/BasicLayout.tsx";
 import useCount from "../hooks/useCount.ts";
+import CheckAuth from "../components/common/CheckAuth.tsx";
 
 function Contact() {
 
@@ -7,7 +8,9 @@ function Contact() {
 
     return (
         <BasicLayout>
-            <h1 onClick={dec}>Contact Page  {countState.num}</h1>
+            <CheckAuth>
+                <h1 onClick={dec}>Contact Page  {countState.num}</h1>
+            </CheckAuth>
         </BasicLayout>
     );
 }

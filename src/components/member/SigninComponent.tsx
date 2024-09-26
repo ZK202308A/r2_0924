@@ -1,7 +1,6 @@
 import {ISigninParam} from "../../types/member.ts";
 import {ChangeEvent, useState} from "react";
-import {useAppDispatch} from "../../hooks/rtk.ts";
-import {signin} from "../../slices/signinSlice.ts";
+import useSignin from "../../hooks/useSignin.ts";
 
 
 const initialState: ISigninParam ={
@@ -14,7 +13,7 @@ function SigninComponent() {
 
     const [param, setParam] = useState<ISigninParam>({...initialState})
 
-    const dispatch = useAppDispatch()
+    const {doSignin} = useSignin()
 
     const handleChange = (event:ChangeEvent<HTMLInputElement>):void => {
         let name:string|undefined = event.target.name;
@@ -25,7 +24,7 @@ function SigninComponent() {
     }
 
     const handleClick = () => {
-        dispatch(signin(param))
+        doSignin(param)
     }
 
     return (

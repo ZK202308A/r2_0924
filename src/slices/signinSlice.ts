@@ -1,6 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {IMember} from "../types/member.ts";
-import {i} from "vite/dist/node/types.d-aGj9QkWt";
+import {Cookies} from 'react-cookie'
+
+const cookies = new Cookies();
 
 const initialState:IMember = {
     email:''
@@ -13,7 +15,11 @@ const signinSlice = createSlice({
         signin: (state, action) => {
             console.log(state,action)
             const email = action.payload.username
-            return {email:email}
+
+            const result = {email:email}
+            cookies.set("member",JSON.stringify(result), {path : "/", maxAge: 3600 })
+
+            return result
         },
         signout: (state, action) => {
             console.log(state,action)
