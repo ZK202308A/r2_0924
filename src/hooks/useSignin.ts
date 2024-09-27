@@ -1,12 +1,28 @@
 import {useAppDispatch, useAppSelector} from "./rtk.ts";
 import {ISigninParam} from "../types/member.ts";
 import {signin, signout} from "../slices/signinSlice.ts";
+import {Cookies} from "react-cookie";
+
+const cookies = new Cookies();
+
+const loadCookie = () => {
+
+    const memberCookie = cookies.get("member", {path:"/"});
+
+    console.log("memberCookie" + memberCookie)
+
+    return memberCookie
+}
 
 
 const useSignin = () => {
 
     const dispatch = useAppDispatch()
-    const member = useAppSelector(state => state.signin);
+    let member = useAppSelector(state => state.signin)
+
+    if(!member.email){
+        member = loadCookie()
+    }
 
 
     const doSignin = (param:ISigninParam) => {

@@ -1,12 +1,11 @@
-import useSignin from "../../hooks/useSignin.ts";
-import useCheckAuth from "../../hooks/useCheckAuth.ts";
 import {Navigate} from "react-router-dom";
+import useSignin from "../../hooks/useSignin.ts";
 
 function CheckAuth({children}: {children: React.ReactNode}) {
 
-    const {check} = useCheckAuth()
+    const {member} = useSignin()
 
-    if(!check()) {
+    if(!member) {
         return <Navigate to={'/member/signin'} replace={true}></Navigate>
     }
 
