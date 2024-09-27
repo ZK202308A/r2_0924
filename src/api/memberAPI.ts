@@ -13,3 +13,12 @@ export const postSignin = async (param:ISigninParam):Promise<IMember> => {
 
     return res.data
 }
+
+export const refreshRequest = async (accessToken:string, refreshToken:string):Promise<IMember> => {
+
+    const res = await axios.get(`${host}/refresh?refreshToken=${refreshToken}`, {
+        headers: {'Authorization': `Bearer ${accessToken}`},
+    })
+    return res.data
+
+}

@@ -1,7 +1,8 @@
 import {IPageResponse, ITodo} from "../types/todo.ts";
 import  axios from "axios";
+import jwtAxios from "../util/jwtUtil.ts";
 
-const host:string ='http://localhost:8088/api/v1/todos';
+const host:string ='http://localhost:8090/api/todo';
 
 
 export const getTodoList = async ( page?:number, size?:number): Promise<IPageResponse> => {
@@ -9,7 +10,7 @@ export const getTodoList = async ( page?:number, size?:number): Promise<IPageRes
     const pageValue:number = page || 1
     const sizeValue:number = size || 10
 
-    const res = await axios.get(`${host}/list?page=${pageValue}&size=${sizeValue}`)
+    const res = await jwtAxios.get(`${host}/list?page=${pageValue}&size=${sizeValue}`)
     return res.data
 
 }
