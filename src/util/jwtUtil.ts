@@ -50,10 +50,11 @@ const beforeRes = async (res: AxiosResponse):Promise<AxiosResponse> => {
 
         cookies.set("member", memberCookie, {path:"/", maxAge:(60*60*24*7)})
 
+        //원래의 호출을 시도해야함
+        const originalRequest = res.config
+        originalRequest.headers.Authorization = `Bearer ${refreshResult.accessToken}`
+        return await axios(originalRequest)
     }
-
-
-
     return res
 }
 
