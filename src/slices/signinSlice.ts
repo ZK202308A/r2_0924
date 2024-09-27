@@ -1,12 +1,22 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {IMember} from "../types/member.ts";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {IMember, ISigninParam} from "../types/member.ts";
 import {Cookies} from 'react-cookie'
+import {postSignin} from "../api/memberAPI.ts";
 
 const cookies = new Cookies();
 
 const initialState:IMember = {
-    email:''
+    email:'',
+    accessToken:'',
+    refreshToken: '',
+    pw:'',
+    nickname: '',
+    social: false,
+    roleNames: []
 }
+
+export const postSigninThunk = createAsyncThunk('postSigninThunk', postSignin)
+
 
 const signinSlice = createSlice({
     name: "signin",
@@ -25,6 +35,18 @@ const signinSlice = createSlice({
             console.log(state,action)
             return {...initialState}
         }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(postSigninThunk.fulfilled, (state,action) => {
+                console.log("postSigninThunk.fulfilled")
+
+                const result = action.payload
+                return result
+            })
+            .addCase(postSigninThunk.pending, (state,action) => {
+                console.log("postSigninThunk.pending")
+            })
     }
 })
 

@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "./rtk.ts";
 import {ISigninParam} from "../types/member.ts";
-import {signin, signout} from "../slices/signinSlice.ts";
+import {postSigninThunk, signin, signout} from "../slices/signinSlice.ts";
 import {Cookies} from "react-cookie";
 
 const cookies = new Cookies();
@@ -9,7 +9,7 @@ const loadCookie = () => {
 
     const memberCookie = cookies.get("member", {path:"/"});
 
-    console.log("memberCookie" + memberCookie)
+    //console.log("memberCookie" + memberCookie)
 
     return memberCookie
 }
@@ -26,11 +26,18 @@ const useSignin = () => {
 
 
     const doSignin = (param:ISigninParam) => {
-        dispatch(signin(param))
+        dispatch(postSigninThunk(param))
+            .unwrap()
+            .then( data => {
+                console.log("unwrap")
+                console.log(data)
+                cookies.set("member", data, {path:"/"})
+        })
     }
 
     const doSignout = () => {
         dispatch(signout(null))
+        cookies.remove("member", {path:"/"})
     }
 
     return {member, doSignin, doSignout}
