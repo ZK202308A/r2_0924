@@ -1,13 +1,13 @@
 import {useAppDispatch, useAppSelector} from "./rtk.ts";
 import {ISigninParam} from "../types/member.ts";
-import {postSigninThunk, signin, signout} from "../slices/signinSlice.ts";
+import {postSigninThunk, signout} from "../slices/signinSlice.ts";
 import {Cookies} from "react-cookie";
 
 const cookies = new Cookies();
 
 const loadCookie = () => {
 
-    const memberCookie = cookies.get("member", {path:"/"});
+    const memberCookie = cookies.get("member");
 
     //console.log("memberCookie" + memberCookie)
 

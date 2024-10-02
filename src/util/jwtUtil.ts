@@ -10,7 +10,10 @@ const beforeReq = (config: InternalAxiosRequestConfig): InternalAxiosRequestConf
 
     console.log("before request")
 
-    const memberCookie = cookies.get("member", {path:"/"})
+
+
+
+    const memberCookie = cookies.get("member")
 
     if(!memberCookie ) {
         throw new Error('Member Cookie not found.')
@@ -40,7 +43,7 @@ const beforeRes = async (res: AxiosResponse):Promise<AxiosResponse> => {
     if(data.error && data.error === 'ERROR_ACCESS_TOKEN'){
         console.log("access token에 문제가 있음 refresh를 시도해봐야함")
 
-        const memberCookie = cookies.get("member", {path:"/"})
+        const memberCookie = cookies.get("member")
         const {accessToken, refreshToken} = memberCookie
 
         const refreshResult = await refreshRequest(accessToken, refreshToken)
